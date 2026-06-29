@@ -34,6 +34,7 @@ out/
 # Uploads & User Files
 # ========================
 backend/uploads/
+ai-service/uploads/
 uploads/
 *.pdf
 *.docx
@@ -51,14 +52,87 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # ========================
-# AI / Vector Store Cache
+# Python - Virtual Environments
+# ========================
+venv/
+env/
+.venv/
+.env/
+resume-advisor/
+ai-service/resume-advisor/
+ai-service/venv/
+ai-service/env/
+
+# ========================
+# Python - Bytecode & Cache
+# ========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+.Python
+
+# ========================
+# Python - Distribution / Packaging
+# ========================
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+wheels/
+
+# ========================
+# Python - Testing & Coverage
+# ========================
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+
+# ========================
+# Python - Type Checkers & Linters
+# ========================
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.ruff_cache/
+
+# ========================
+# Python - Jupyter Notebooks
+# ========================
+.ipynb_checkpoints/
+*.ipynb
+
+# ========================
+# AI / ML - Models & Vector Stores
 # ========================
 *.faiss
 *.index
 faiss_index/
 vector_store/
-__pycache__/
-*.py[cod]
+chroma_db/
+*.bin
+*.safetensors
+*.onnx
+*.pt
+*.pth
+# Hugging Face model cache
+.cache/huggingface/
+models/
+# MKL / Intel libraries (large dependency files)
+mkl/
 
 # ========================
 # OS Generated Files
@@ -127,4 +201,3 @@ coverage/
 .stylelintcache
 .npm
 .node_repl_history
-.npmrc

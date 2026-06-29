@@ -6,6 +6,7 @@ const { runCareerAdvisorAgent } = require('../agents/careerAdvisorAgent');
 const { runInterviewCoachAgent } = require('../agents/interviewCoachAgent');
 const { runResumeRewriterAgent } = require('../agents/resumeRewriterAgent');
 const { runLearningResourceAgent } = require('../agents/learningResourceAgent');
+const { runJobMatchAgent } = require('../agents/jobMatchAgent');
 const ResumeAnalysis = require('../models/ResumeAnalysis');
 
 /**
@@ -46,11 +47,12 @@ const runFullAnalysis = async (analysisId, resumePath, jdPath, targetRole) => {
 
     // ─── STEP 3: Run Context-Dependent Agents ──────────────────
     console.log('\n🔄 Phase 2: Advanced Analysis (Agents 4-7)...');
-    const [careerRoadmap, interviewQuestions, rewrittenResume, learningResources] = await Promise.all([
+    const [careerRoadmap, interviewQuestions, rewrittenResume, learningResources, jobMatch] = await Promise.all([
       runCareerAdvisorAgent(ragPipeline, missingSkills, targetRole),
       runInterviewCoachAgent(ragPipeline, missingSkills, targetRole),
       runResumeRewriterAgent(ragPipeline, targetRole),
       runLearningResourceAgent(missingSkills, targetRole),
+      runJobMatchAgent(ragPipeline, skillGap.matchedSkills, missingSkills, resumeReview.resumeScore),
     ]);
 
     // ─── STEP 4: Save Results to MongoDB ──────────────────────
@@ -68,6 +70,7 @@ const runFullAnalysis = async (analysisId, resumePath, jdPath, targetRole) => {
         interviewQuestions,
         rewrittenResume,
         learningResources,
+        jobMatch,
         processingTime,
       },
       { new: true }

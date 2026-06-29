@@ -17,6 +17,7 @@ export default function Navbar() {
   const navLinks = [
     { to: '/dashboard', label: 'Dashboard', icon: Home },
     { to: '/upload', label: 'New Analysis', icon: Upload },
+    { to: '/profile', label: 'Profile', icon: User },
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -59,12 +60,16 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             {user ? (
               <>
-                <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5">
+                <Link
+                  to="/profile"
+                  id="navbar-profile-link"
+                  className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+                >
                   <div className="w-6 h-6 rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center">
                     <User size={12} className="text-white" />
                   </div>
                   <span className="text-xs text-slate-300 font-medium">{user.name?.split(' ')[0]}</span>
-                </div>
+                </Link>
                 <button
                   onClick={handleLogout}
                   className="btn-ghost text-red-400 hover:text-red-300 hover:bg-red-500/10"

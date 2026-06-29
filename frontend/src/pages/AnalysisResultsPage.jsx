@@ -17,6 +17,7 @@ const TABS = [
   { id: 'review', label: 'Resume Review', icon: FileText },
   { id: 'ats', label: 'ATS Analysis', icon: Shield },
   { id: 'skills', label: 'Skill Gap', icon: Code },
+  { id: 'jobmatch', label: 'Job Match', icon: TrendingUp },
   { id: 'roadmap', label: 'Roadmap', icon: Calendar },
   { id: 'interview', label: 'Interview Prep', icon: MessageSquare },
   { id: 'rewrite', label: 'Resume Rewrite', icon: Edit3 },
@@ -33,6 +34,8 @@ function TabContent({ activeTab, data }) {
       return <AtsTab data={data.atsAnalysis} />;
     case 'skills':
       return <SkillGapTab data={data.skillGap} />;
+    case 'jobmatch':
+      return <JobMatchTab data={data.jobMatch} />;
     case 'roadmap':
       return <RoadmapTab data={data.careerRoadmap} />;
     case 'interview':
@@ -441,6 +444,65 @@ function LearningTab({ data }) {
                 ))}
               </ul>
             </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ── Job Match Predictor Tab ───────────────────────────────────
+function JobMatchTab({ data }) {
+  if (!data || !data.predictions || data.predictions.length === 0) return <EmptyState />;
+
+  const verdictColor = (verdict) => {
+    switch (verdict) {
+      case 'Strong Candidate': return 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
+      case 'Good Fit': return 'text-cyan-400 bg-cyan-500/10 border-cyan-500/20';
+      case 'Needs Work': return 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20';
+      case 'Not Ready Yet': return 'text-rose-400 bg-rose-500/10 border-rose-500/20';
+      default: return 'text-slate-400 bg-slate-500/10 border-slate-500/20';
+    }
+  };
+
+  const barColor = (match) => {
+    if (match >= 75) return 'from-emerald-500 to-emerald-400';
+    if (match >= 55) return 'from-cyan-500 to-cyan-400';
+    if (match >= 35) return 'from-yellow-500 to-yellow-400';
+    return 'from-rose-500 to-rose-400';
+  };
+
+  return (
+    <div className="space-y-4 animate-fade-in">
+      <div className="glass-card p-4 mb-4">
+        <p className="text-slate-400 text-sm">
+          <TrendingUp size={14} className="inline mr-1.5 text-indigo-400" />
+          AI-predicted compatibility with top tech company roles based on your resume and skill profile.
+        </p>
+      </div>
+      {data.predictions.map((pred, i) => (
+        <div key={i} className="glass-card p-5">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">{pred.logo}</span>
+              <div>
+                <h3 className="font-bold text-white">{pred.company}</h3>
+                <p className="text-slate-500 text-xs mt-0.5">{pred.gap}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className={`text-xs font-semibold px-2.5 py-1 rounded-lg border ${verdictColor(pred.verdict)}`}>
+                {pred.verdict}
+              </span>
+              <span className="text-xl font-extrabold text-white">{pred.match}%</span>
+            </div>
+          </div>
+          {/* Match bar */}
+          <div className="h-2 bg-white/8 rounded-full overflow-hidden">
+            <div
+              className={`h-full bg-gradient-to-r ${barColor(pred.match)} rounded-full progress-bar`}
+              style={{ width: `${pred.match}%` }}
+            />
           </div>
         </div>
       ))}

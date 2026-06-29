@@ -110,6 +110,17 @@ const resumeAnalysisSchema = new mongoose.Schema(
       miniProjects: [String],
     }],
 
+    // Feature 8: Job Match Predictor
+    jobMatch: {
+      predictions: [{
+        company: String,
+        logo: String,
+        match: { type: Number, default: 0 },
+        verdict: String,
+        gap: String,
+      }],
+    },
+
     // Metadata
     processingTime: {
       type: Number, // in seconds
